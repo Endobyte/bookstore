@@ -1,1 +1,24 @@
-// Start on ppt 1, slide 17
+extends ../layout
+
+block content
+    h3 Books
+    a(href='/books/add') Add New Book
+    table
+        thead
+            tr
+                th Book Title
+                th Publisher
+                th Genre
+                th Page Count
+                th Cover
+        tbody
+            each book in books
+                tr
+                    td= book.title
+                    td= book.publisher
+                    td= book.genre
+                    td= book.pages
+                    td
+                        img(src=book.cover)
+                    td
+                        a(href=`/books/profile/${book.id}`) View Book
