@@ -1,5 +1,5 @@
 const {Book} = require('../models');
-const genres = ['Horror', 'Science Fiction', 'Dystopian Fiction', 'Historical Fiction', 'Non-Fiction', 'Biography', 'Fiction', 'Mystery'].sort();
+const genres = ['Horror', 'Science Fiction', 'Dystopian Fiction', 'Historical Fiction', 'Non-Fiction', 'Biography', 'Fiction', 'Mystery', 'Fantasy'].sort();
 
 // view all
 module.exports.viewAll = async function (req, res) {
