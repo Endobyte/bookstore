@@ -9,8 +9,10 @@ module.exports.viewAll = async function (req, res) {
 
 // profile
 module.exports.viewProfile = async function (req, res) {
-    const book = await Book.findByPk(req.params.id);
-    res.render('book/profile', {book});
+    const book = await Book.findByPk(req.params.id, {
+        include: 'authors'
+    })
+    res.render('book/profile', {book})
 }
 
 // render add form

@@ -1,4 +1,4 @@
-const {Author} = require('../models');
+const {Author, Book} = require('../models');
 
 // view all
 module.exports.viewAll = async function (req, res) {
@@ -8,8 +8,17 @@ module.exports.viewAll = async function (req, res) {
 
 // profile
 module.exports.viewProfile = async function (req, res) {
-    const author = await Author.findByPk(req.params.id);
-    res.render('author/profile', {author})
+    const author = await Author.findByPk(req.params.id, {
+        include: 'books'
+    });
+    const books = await Book.findAll();
+    let availableBooks = [];
+    for (let i = 0; i < books.length; i++) {
+        if (!authorHasBook(author, books[i])) {
+            availableBooks.push(books[i]);
+        }
+    }
+    res.render('author/profile', {author, availableBooks})
 }
 
 // render add form
@@ -60,4 +69,15 @@ module.exports.deleteAuthor = async function (req, res) {
         }
     });
     res.redirect('/authors');
+}
+
+// continue on slide 21, ppt 3
+
+function authorHasBook (author, book) {
+    for (let i = 0; i < author.books.length; i++) {
+        if (book.id === author.books[i].id) {
+            return true
+        }
+    }
+    return false
 }
