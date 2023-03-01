@@ -4,6 +4,8 @@ block content
     h3= book.title
     a(href=`/books/edit/${book.id}`) Edit Book
     a(href=`/books/delete/${book.id}`) Delete Book
+    br
+    br
     img(src=book.cover)
     div
         p Publisher: #{book.publisher}
@@ -11,19 +13,33 @@ block content
         p Page Count: #{book.pages}
         p #{book.description}
     div.authors
+        h4 Available Authors
+        if availableAuthors.length>0
+            form(action=`/books/${book.id}/write` method='post')
+                select(name='author' id='author' autocomplete=off)
+                    each author in availableAuthors
+                        option(value= author.id) #{author.firstname} #{author.lastname}
+                button.button.primary(type='submit') Add Author
+        else
+            p Apparently, this book was written by every author.
+
         h4 Authors
-        table
-            thead
-                tr
-                    th First
-                    th Last
-                    th DOB (yyyy-mm-dd)
-                    th
-            tbody
-                each author in book.authors
+        if book.authors.length>0
+            table
+                thead
                     tr
-                        td= author.firstname
-                        td= author.lastname
-                        td= author.dob
-                        td
-                            a(href=`/authors/profile/${author.id}`) View Author
+                        th First
+                        th Last
+                        th DOB (yyyy-mm-dd)
+                        th
+                tbody
+                    each author in book.authors
+                        tr
+                            td= author.firstname
+                            td= author.lastname
+                            td= author.dob
+                            td
+                                a(href=`/authors/profile/${author.id}`) View Author
+                                a(href=`/books/${book.id}/removeAuthor/${author.id}`) Remove Author
+        else
+            p A ghost wrote this book.

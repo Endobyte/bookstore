@@ -9,27 +9,36 @@ block content
         p Date of Birth: #{author.dob}
     h4 Author's Books
     em Add a book
-    form(action=`/authors/${author.id}/write/` method='post')
-        select(name='book' id='book' autocomplete=off)
-            each book in availableBooks
-                option(value=book.id) #{book.title}
-        button.button(type='submit') I wrote this!
-    table
-        thead
-            tr
-                th Book Title
-                th Publisher
-                th Genre
-                th Page Count
-                th Cover
-        tbody
-            each book in author.books
+    if availableBooks.length>0
+        form(action=`/authors/${author.id}/write/` method='post')
+            select(name='book' id='book' autocomplete=off)
+                each book in availableBooks
+                    option(value=book.id) #{book.title}
+            button.button.primary(type='submit') I wrote this!
+    else
+        p It seems this author has written every book.
+
+    h4 Written Books
+    if author.books.length>0
+        table
+            thead
                 tr
-                    td= book.title
-                    td= book.publisher
-                    td= book.genre
-                    td= book.pages
-                    td
-                        img(src=book.cover)
-                    td
-                        a(href=`/books/profile/${book.id}`) View Book
+                    th Book Title
+                    th Publisher
+                    th Genre
+                    th Page Count
+                    th Cover
+            tbody
+                each book in author.books
+                    tr
+                        td= book.title
+                        td= book.publisher
+                        td= book.genre
+                        td= book.pages
+                        td
+                            img(src=book.cover)
+                        td
+                            a(href=`/books/profile/${book.id}`) View Book
+                            a(href=`/authors/${author.id}/removeBook/${book.id}`) Remove Book
+    else
+        p This "author" hasn't written any books.

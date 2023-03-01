@@ -1,4 +1,4 @@
-const {Author, Book} = require('../models');
+const {Author, Book, AuthorBooks} = require('../models');
 
 // view all
 module.exports.viewAll = async function (req, res) {
@@ -71,7 +71,25 @@ module.exports.deleteAuthor = async function (req, res) {
     res.redirect('/authors');
 }
 
-// continue on slide 21, ppt 3
+// add book to author
+module.exports.writeAuthor = async function (req, res) {
+    await AuthorBooks.create({
+        author_id: req.params.authorId,
+        book_id: req.body.book
+    })
+    res.redirect(`/authors/profile/${req.params.authorId}`)
+}
+
+// delete book from author
+module.exports.removeBook = async function (req, res) {
+    await AuthorBooks.destroy({
+        where: {
+            author_id: req.params.authorId,
+            book_id: req.params.bookId
+        }
+    })
+    res.redirect(`/authors/profile/${req.params.authorId}`)
+}
 
 function authorHasBook (author, book) {
     for (let i = 0; i < author.books.length; i++) {
